@@ -1,0 +1,145 @@
+---
+/**
+ * Hero de la Expo Alvear.
+ *
+ * Inspirado en la estructura de la pagina de referencia: antebrazo de la
+ * institucion, titular gigante, subtitulo de la edicion, una cita que define
+ * el tema, el dato de fecha/hora y una fila de accesos.
+ *
+ * Adaptado al sistema visual de este sitio (blanco, bordo, serif de display):
+ * en vez del degradado azul plano, la foto real del colegio va a sangre y el
+ * texto se apoya sobre una veladura de tinta que lo hace legible sin tapar la
+ * imagen. La cita y la fecha son la unica cromatica de acento.
+ */
+const edicion = 'Edición Regiones Argentinas';
+const fecha = '14 de octubre de 2026 · 9 a 12 hs';
+const cita = 'Conocer nuestras regiones es conocer la diversidad que nos une';
+const accesos = [
+	{ label: 'Regiones Argentinas', href: '/regiones/' },
+	{ label: 'Expo 2026', href: '/empresas/' },
+];
+---
+
+<section
+	class="relative isolate flex min-h-[calc(100svh-var(--header-h,5rem))] items-end overflow-hidden bg-ink lg:items-center"
+>
+	<!-- Foto del colegio a sangre. -->
+	<img
+		src="/hero.png"
+		alt="Fachada del Instituto Secundario Carlos María de Alvear sobre la calle"
+		class="absolute inset-0 size-full object-cover object-center"
+		width="896"
+		height="517"
+		loading="eager"
+		fetchpriority="high"
+	/>
+	<!--
+		Veladura doble: la horizontal sostiene el contraste del texto sobre la
+		fachada y la vertical asienta el bloque contra el borde inferior.
+	-->
+	<div
+		class="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/25 lg:via-ink/70 lg:to-transparent"
+		aria-hidden="true"
+	></div>
+	<div
+		class="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-ink/45"
+		aria-hidden="true"
+	></div>
+
+	<!-- Texto -->
+	<div class="relative mx-auto w-full max-w-6xl px-5 pt-32 pb-14 sm:px-8 lg:py-24">
+		<div class="max-w-2xl">
+			<!-- Antebrazo: la institucion se presenta antes que el evento. -->
+			<p
+				class="aparece flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.22em] text-white/70 uppercase"
+				style="animation-delay: 60ms"
+			>
+				<span class="h-px w-10 shrink-0 bg-bordo" aria-hidden="true"></span>
+				Instituto Secundario Carlos María de Alvear
+			</p>
+
+			<h1
+				class="aparece mt-6 font-display text-[clamp(3.25rem,11vw,7rem)] leading-[0.86] font-semibold tracking-tight text-white"
+				style="animation-delay: 140ms"
+			>
+				Expo Alvear
+			</h1>
+
+			<p class="aparece mt-4 font-display text-2xl text-transparent bg-clip-text bg-linear-to-r from-[#74ACDF] via-[#FFFFFF] to-[#74ACDF] italic sm:text-3xl" style="animation-delay: 220ms">
+				{edicion}
+			</p>
+
+			<blockquote
+				class="aparece mt-8 border-l-2 border-bordo pl-5 font-display text-xl leading-snug text-white/95"
+				style="animation-delay: 300ms"
+			>
+				«{cita}»
+			</blockquote>
+
+			<p
+				class="aparece mt-8 inline-block bg-white px-4 py-2 font-mono text-[0.6875rem] tracking-[0.16em] text-ink uppercase"
+				style="animation-delay: 380ms"
+			>
+				{fecha}
+			</p>
+
+			<p class="aparece mt-6 max-w-xl text-base leading-relaxed text-white/75 sm:text-lg" style="animation-delay: 460ms">
+				Una experiencia presencial que también podés recorrer online. Conocé los emprendimientos, proyectos y
+				producciones de nuestra comunidad educativa.
+			</p>
+		</div>
+
+		<!-- Accesos -->
+		<div class="aparece mt-10 flex flex-wrap items-center gap-3" style="animation-delay: 540ms">
+			<a
+				href="/empresas/"
+				class="inline-flex items-center gap-2  border border-white/30 px-4 py-2.5 text-sm font-medium tracking-wide text-white transition-colors hover:border-bordo hover:bg-bordo"
+			>
+				26 emprendimientos
+				<span aria-hidden="true">→</span>
+				<span class="sr-only">Empezar a recorrer</span>
+			</a>
+			{
+				accesos.map((acceso) => (
+					<a
+						href={acceso.href}
+						class="inline-flex items-center border border-white/20 px-4 py-2.5 text-sm tracking-wide text-white/70 transition-colors hover:border-white/50 hover:text-white"
+					>
+						{acceso.label}
+					</a>
+				))
+			}
+		</div>
+
+		<p
+			class="aparece mt-12 font-mono text-[0.6875rem] tracking-[0.16em] text-white/60 uppercase"
+			style="animation-delay: 620ms"
+		>
+			Faraday 5721 · Barrio Los Eucaliptus · Córdoba, Argentina
+		</p>
+	</div>
+</section>
+
+<style>
+	/* Entrada escalonada: el bloque se arma en el orden en que se lee. */
+	@keyframes subir {
+		from {
+			opacity: 0;
+			transform: translateY(14px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
+	.aparece {
+		animation: subir 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.aparece {
+			animation: none;
+		}
+	}
+</style>

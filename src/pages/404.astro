@@ -1,0 +1,40 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Página no encontrada · Expo Alvear 2026">
+	<section class="bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-28">
+			<p class="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase">
+				<span class="h-px w-10 shrink-0 bg-bordo" aria-hidden="true"></span>
+				Error 404
+			</p>
+
+			<h1
+				class="mt-6 max-w-3xl font-display text-[clamp(2.5rem,6vw,4.5rem)] leading-[0.92] font-semibold tracking-tight text-ink"
+			>
+				Esta página no existe
+			</h1>
+
+			<p class="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+				El enlace que seguiste no lleva a ningún lado de la Expo. Te dejamos el camino de vuelta.
+			</p>
+
+			<div class="mt-10 flex flex-wrap items-center gap-3">
+				<a
+					href="/"
+					class="inline-flex items-center gap-2 border border-ink/20 px-4 py-2.5 text-sm font-medium tracking-wide text-ink transition-colors hover:border-bordo hover:bg-bordo hover:text-white"
+				>
+					<span aria-hidden="true">←</span>
+					Volver al inicio
+				</a>
+				<a
+					href="/empresas/"
+					class="inline-flex items-center gap-2 border border-ink/20 px-4 py-2.5 text-sm font-medium tracking-wide text-ink transition-colors hover:border-bordo hover:bg-bordo hover:text-white"
+				>
+					Ver las empresas
+				</a>
+			</div>
+		</div>
+	</section>
+</Layout>

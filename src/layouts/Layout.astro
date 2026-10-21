@@ -1,23 +1,42 @@
+---
+/**
+ * Layout base del sitio.
+ *
+ * Aplica los tokens de src/styles/global.css y monta las tres fuentes
+ * self-hosteadas (Open Sans al cuerpo, Source Serif a los titulares, IBM Plex
+ * Mono a los datos). El <Font /> de astro:assets genera el @font-face con el
+ * fallback metricamente ajustado, asi que no hay salto de layout al cargar.
+ */
+const { title, description } = Astro.props;
+import "@/styles/global.css";
+import { Font } from "astro:assets";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es-AR">
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		<meta property="og:title" content={title} />
+		{description && <meta property="og:description" content={description} />}
+		<meta property="og:type" content="website" />
+		<meta name="twitter:card" content="summary" />
+		<Font cssVariable="--font-open-sans" />
+		<Font cssVariable="--font-source-serif" />
+		<Font cssVariable="--font-plex-mono" />
 	</head>
 	<body>
+		<Header />
 		<slot />
+		<Footer />
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

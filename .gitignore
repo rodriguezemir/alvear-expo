@@ -23,3 +23,6 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 .agents/
+
+# archivos fuente de trabajo (no se sirven)
+public/favicon_io.zip

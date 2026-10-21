@@ -1,0 +1,224 @@
+---
+/**
+ * Cabecera institucional de la Expo Alvear.
+ *
+ * Direccion visual: el peso lo pone el sello (serif para la marca, monoespaciada
+ * para los datos), la estructura la dan filetes finos y el color de marca aparece
+ * solo en dos lugares (el tick bajo la barra y el enlace activo). Fondo blanco,
+ * sin sombras: la jerarquia va por peso y filete, no por relieve.
+ *
+ * El bloque superior queda fuera de <header> a proposito: si fuera parte del
+ * header, el sticky no tendria recorrido y la barra no se pegaria al scroll.
+ */
+const navLinks = [
+	{ label: 'Inicio', href: '/', current: true },
+	{ label: 'Empresas', href: '/empresas/', current: false },
+	{ label: 'Tecnica', href: '/tecnica/', current: false },
+	{ label: 'Naturales', href: '/naturales/', current: false },
+	{ label: 'Invitacion', href: '/invitacion/', current: false },
+	{ label: 'Notas', href: 'http://alvear.dynalias.com/', current: false },
+];
+---
+
+<!-- Banda superior: datos de la edicion, en el registro de un membrete impreso. -->
+<!-- <div class="bg-ink text-white">
+	<div
+		class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-2 font-mono text-[0.6875rem] tracking-[0.18em] uppercase sm:px-8"
+	>
+		<p>Edicion Regiones Argentinas</p>
+		<p class="hidden text-white/60 sm:block">Mendoza &middot; Argentina</p>
+	</div>
+</div> -->
+
+<header class="bg-white fixed w-screen left-0 top-0 z-50" id="header-nav">
+	<!-- Barra principal -->
+	<div>
+		<div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
+			<!-- LOGO -->
+			<div>
+				<a href="/" class="group flex items-center gap-3.5">
+					<img src="/alvear_logo.png" width="50" height="50" alt="Alvear Expo" class="group-hover:scale-110 transition-all" />
+					<span class="flex flex-col leading-none">
+						<span class="font-display text-xl font-semibold tracking-tight  sm:text-[1.375rem]">
+							Expo Alvear
+						</span>
+						<span class="mt-1 font-mono text-[0.6875rem] tracking-[0.22em]  uppercase">2026</span>
+					</span>
+				</a>
+			</div>
+
+			<!-- NAVEGACION -->
+			<nav class="hidden md:block" aria-label="Principal">
+				<ul class="flex items-center gap-8">
+					{
+						navLinks.map((link) => (
+							<li>
+								<a
+									href={link.href}
+									aria-current={link.current ? 'page' : undefined}
+									class:list={[
+										'relative block py-1 text-sm font-medium tracking-wide transition-colors',
+										'after:absolute after:inset-x-0 after:-bottom-1 after:h-px after:origin-left after:bg-bordo after:transition-[scale]',
+										link.current
+											? ' after:scale-x-100'
+											: ' after:scale-x-0 hover: hover:after:scale-x-100',
+									]}
+								>
+									{link.label}
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<!-- ACCION -->
+			<div class="flex items-center gap-3">
+				<a
+					href="#"
+					class="hidden border border-ink/20 px-4 py-2 text-sm font-medium tracking-wide  transition-colors hover:border-bordo hover:bg-bordo hover:text-white sm:inline-block"
+				>
+					Opinar
+				</a>
+
+				<button
+					type="button"
+					class="group grid size-10 place-items-center border border-ink/20  transition-colors hover:border-bordo hover:text-bordo md:hidden"
+					aria-expanded="false"
+					aria-controls="nav-movil"
+				>
+					<span class="sr-only">Abrir menu</span>
+					<svg
+						class="size-5"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						stroke-linecap="round"
+						aria-hidden="true"
+					>
+						<!--
+							En SVG el transform-origin por defecto es (0,0): sin origin-center
+							las lineas rotan fuera del viewBox. Y rotate/translate son
+							propiedades CSS independientes, asi que transition-transform no
+							las anima: hay que transicionar las tres por separado.
+						-->
+						<path
+							class="origin-center transition-[translate,rotate] duration-200 group-aria-expanded:translate-y-1.5 group-aria-expanded:rotate-45"
+							d="M3 6h18"
+						/>
+						<path class="transition-opacity duration-200 group-aria-expanded:opacity-0" d="M3 12h18" />
+						<path
+							class="origin-center transition-[translate,rotate] duration-200 group-aria-expanded:-translate-y-1.5 group-aria-expanded:-rotate-45"
+							d="M3 18h18"
+						/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- NAVEGACION MOVIL -->
+	<nav id="nav-movil" class="hidden border-b border-rule bg-white md:hidden" aria-label="Principal movil">
+		<ul class="divide-y divide-rule">
+			{
+				navLinks.map((link) => (
+					<li>
+						<a
+							href={link.href}
+							aria-current={link.current ? 'page' : undefined}
+							class:list={[
+								'block px-5 py-3.5 text-sm font-medium tracking-wide transition-colors',
+								link.current ? 'text-bordo' : ' hover:bg-bordo-tint',
+							]}
+						>
+							{link.label}
+						</a>
+					</li>
+				))
+			}
+			<li class="bg-white">
+				<a href="#" class="block px-5 py-3.5 text-sm font-medium tracking-wide hover:bg-bordo-tint">
+					Opinar
+				</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+<script>
+	// Menu movil: un solo boton, sin dependencias.
+	const boton = document.querySelector<HTMLButtonElement>('button[aria-controls="nav-movil"]');
+	const menu = document.getElementById('nav-movil');
+
+	if (boton && menu) {
+		const etiqueta = boton.querySelector('span');
+
+		const fijar = (abierto: boolean) => {
+			boton.setAttribute('aria-expanded', String(abierto));
+			menu.classList.toggle('hidden', !abierto);
+			etiqueta?.replaceChildren(document.createTextNode(abierto ? 'Cerrar menu' : 'Abrir menu'));
+		};
+
+		boton.addEventListener('click', () => {
+			fijar(boton.getAttribute('aria-expanded') !== 'true');
+		});
+
+		document.addEventListener('keydown', (evento) => {
+			if (evento.key === 'Escape' && boton.getAttribute('aria-expanded') === 'true') {
+				fijar(false);
+				boton.focus();
+			}
+		});
+	}
+</script>
+
+<style>
+	#header-nav {
+		animation: slide-down 0.3s ease-out both;
+		animation-timeline: scroll();
+		animation-range: 0 100px;
+	}
+
+	@keyframes slide-down {
+		from {
+			padding: 10px;
+		}
+		to {
+		}
+	}
+</style>
+
+<!--
+	Espaciador: el header es fixed, asi que hay que reservar su alto en el flujo.
+	Su altura cambia con el scroll (el padding se anima de 10px a 0), asi que se
+	mide en vivo y se publica como --header-h. Sin esto el contenido queda por
+	debajo del header o flotando con un hueco.
+-->
+<div id="header-spacer" class="w-full" style="height: var(--header-h, 5rem)"></div>
+
+<script>
+	// Publica la altura del header como --header-h.
+	//
+	// El header encoge al scrollear (la animacion le saca 10px de padding), asi
+	// que se toma la altura MAXIMA vista y nunca se reduce: si el espaciador
+	// encogiera con el header, todo el contenido de abajo saltaria al scrollear.
+	const header = document.getElementById('header-nav');
+	const spacer = document.getElementById('header-spacer');
+
+	if (header && spacer) {
+		let maximo = 0;
+
+		const publicar = () => {
+			const alto = Math.round(header.getBoundingClientRect().height);
+			if (alto > maximo) {
+				maximo = alto;
+				document.documentElement.style.setProperty('--header-h', `${maximo}px`);
+			}
+		};
+
+		// ResizeObserver cubre el cambio de padding que dispara la animacion de scroll.
+		new ResizeObserver(publicar).observe(header);
+		publicar();
+	}
+</script>

@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+	/* Roles: la institucion habla en voz baja, la distincion la pone el sello. */
+	--font-display: var(--font-source-serif), Georgia, serif;
+	--font-sans: var(--font-open-sans), system-ui, sans-serif;
+	--font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+	--color-ink: #14161a;
+	--color-muted: #6a6e76;
+	--color-rule: #e4e2de;
+	--color-bordo: #8c2231;
+	--color-bordo-tint: #f7edef;
+}
+
+@layer base {
+	html {
+		-webkit-text-size-adjust: 100%;
+	}
+
+	body {
+		@apply bg-white font-sans text-ink antialiased;
+	}
+
+	::selection {
+		background-color: var(--color-bordo);
+		color: #fff;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-bordo);
+		outline-offset: 2px;
+	}
+}
