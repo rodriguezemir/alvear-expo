@@ -26,3 +26,4 @@ pnpm-debug.log*
 
 # archivos fuente de trabajo (no se sirven)
 public/favicon_io.zip
+__pycache__/
