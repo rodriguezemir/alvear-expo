@@ -1,0 +1,676 @@
+[
+  {
+    "nombre": "Flumen",
+    "slug": "flumen",
+    "curso": "4A",
+    "producto": "FUENTES",
+    "actividad": "Venta al por menor de artículos nuevos n.c.p.",
+    "expediente": "EXP-2026-22714380",
+    "integrantes": "LORELLO GOYCOCHEA ULLUA HERNANDEZ TAPIA",
+    "imagenes": [
+      "flumen-1.jpeg",
+      "flumen-2.jpeg",
+      "flumen-3.jpeg",
+      "flumen-4.jpeg",
+      "flumen-5.jpeg",
+      "flumen-6.jpeg"
+    ],
+    "portada": "flumen-1.jpeg",
+    "productos": [
+      {
+        "producto": "Jarrones",
+        "precio": 6000,
+        "disponible": 12,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Fuentes",
+        "precio": 22000,
+        "disponible": 8,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Fraslúa",
+    "slug": "fraslua",
+    "curso": "4A",
+    "producto": "velas aromaticas",
+    "actividad": "productos de vidrio",
+    "expediente": "EXP-2026-41441440",
+    "integrantes": "allende coloos lumana gallopa maldonado garay",
+    "imagenes": [
+      "fraslua-producto.jpeg"
+    ],
+    "portada": "fraslua-producto.jpeg",
+    "productos": [
+      {
+        "producto": "Velas Aromaticas",
+        "precio": 13000,
+        "disponible": 61,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Lienzo Urbano",
+    "slug": "lienzo-urbano",
+    "curso": "4A",
+    "producto": "totebags",
+    "actividad": "Venta al por menor de papel, cartón, materiales de embalaje y artículos de librería",
+    "expediente": "EXP-2026-17429601",
+    "integrantes": "ledesma honores lopez mora botta",
+    "imagenes": [
+      "lienzo-urbano-1.jpeg",
+      "lienzo-urbano-2.jpeg",
+      "lienzo-urbano-3.jpeg",
+      "lienzo-urbano-4.jpeg"
+    ],
+    "portada": "lienzo-urbano-1.jpeg",
+    "productos": [
+      {
+        "producto": "Totebags",
+        "precio": 6300,
+        "disponible": 40,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Pura Esencia",
+    "slug": "pura-esencia",
+    "curso": "4A",
+    "producto": "velas aromaticas",
+    "actividad": "Venta al por menor de productos cosméticos, de tocador y de perfumería",
+    "expediente": "EXP-2026-06034170",
+    "integrantes": "zanetti riga pernedera oropel mercado",
+    "imagenes": [
+      "pura-esencia-1.jpeg",
+      "pura-esencia-2.jpeg",
+      "pura-esencia-3.jpeg",
+      "pura-esencia-4.jpeg",
+      "pura-esencia-5.jpeg"
+    ],
+    "portada": "pura-esencia-1.jpeg",
+    "productos": [
+      {
+        "producto": "Velas Aromaticas Combos tipo 1",
+        "precio": 3000,
+        "disponible": 11,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Velas Aromaticas Combos tipo 2",
+        "precio": 2000,
+        "disponible": 15,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Veta",
+    "slug": "veta",
+    "curso": "4A",
+    "producto": "PORTA CELULARES DE MADERA",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-88467132",
+    "integrantes": "NEIRA BENAVIDEZ ARABELLA VEGA AZABAL",
+    "imagenes": [
+      "fraslua-1.jpeg",
+      "fraslua-2.jpeg",
+      "fraslua-3.jpeg",
+      "fraslua-4.jpeg",
+      "fraslua-5.jpeg"
+    ],
+    "portada": "fraslua-1.jpeg",
+    "productos": [
+      {
+        "producto": "Porta Celulares de Mad. chico c/vinilo",
+        "precio": 7600,
+        "disponible": 13,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Porta Celulares de Mad. chico s/vinilo",
+        "precio": 6500,
+        "disponible": 14,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Porta Celulares de Mad. grande c/vinilo",
+        "precio": 10500,
+        "disponible": 13,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Porta Celulares de Mad. grande s/vinilo",
+        "precio": 9200,
+        "disponible": 13,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Vida Enmarcada",
+    "slug": "vida-enmarcada",
+    "curso": "4A",
+    "producto": "cuadros",
+    "actividad": "Venta al por menor de papel, cartón, materiales de embalaje y artículos de librería",
+    "expediente": "EXP-2026-34548527",
+    "integrantes": "nievas soto guzman olmos caminos",
+    "imagenes": [
+      "vida-enmarcada-1.jpeg"
+    ],
+    "portada": "vida-enmarcada-1.jpeg",
+    "productos": [
+      {
+        "producto": "Cuadros",
+        "precio": 20000,
+        "disponible": 30,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Aromas",
+    "slug": "aromas",
+    "curso": "4B",
+    "producto": "JABONES ARTESANALES",
+    "actividad": "Fabricación de jabones y detergentes",
+    "expediente": "EXP-2026-85368410",
+    "integrantes": "GUERREROS ARENA PERALTA RODRIGUEZ MENDOZA LUNA",
+    "imagenes": [
+      "aromas-1.jpeg"
+    ],
+    "portada": "aromas-1.jpeg",
+    "productos": [
+      {
+        "producto": "Jabones artesanales",
+        "precio": 12200,
+        "disponible": 31,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Emalu",
+    "slug": "emalu",
+    "curso": "4B",
+    "producto": "BANDEJAS",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-19319922",
+    "integrantes": "ATAIDES LOPEZ NIETO RIOS GOMEZ MAGGIARA",
+    "imagenes": [
+      "emalu-1.jpeg",
+      "emalu-2.jpeg",
+      "emalu-3.jpeg"
+    ],
+    "portada": "emalu-1.jpeg",
+    "productos": [
+      {
+        "producto": "Bandeja grande",
+        "precio": 30000,
+        "disponible": 8,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Bandeja chica",
+        "precio": 26000,
+        "disponible": 8,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Flor de Mate",
+    "slug": "flor-de-mate",
+    "curso": "4B",
+    "producto": "MATES",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-34370477",
+    "integrantes": "NORIEGA FARIAS MENDOZA OLIVERA OLIVERA ESPINDOOLA",
+    "imagenes": [
+      "flor-de-mate-1.jpeg"
+    ],
+    "portada": "flor-de-mate-1.jpeg",
+    "productos": [
+      {
+        "producto": "Mates",
+        "precio": 15000,
+        "disponible": 31,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Mosaika",
+    "slug": "mosaika",
+    "curso": "4B",
+    "producto": "espejos decorativos",
+    "actividad": "Venta al por menor de productos cosméticos, de tocador y de perfumería",
+    "expediente": "EXP-2026-48175276",
+    "integrantes": "lescano lujan suarez juncos rabares consoli espindola",
+    "imagenes": [
+      "mosaika-1.jpeg",
+      "mosaika-2.jpeg",
+      "mosaika-3.jpeg"
+    ],
+    "portada": "mosaika-1.jpeg",
+    "productos": [
+      {
+        "producto": "Espejos decorativos",
+        "precio": 30000,
+        "disponible": 13,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Lumos",
+    "slug": "lumos",
+    "curso": "4B",
+    "producto": "LAMPARAS",
+    "actividad": "Venta al por menor de artículos de iluminación",
+    "expediente": "EXP-2026-22714289",
+    "integrantes": "MONJES SANCHEZ FERNANDEZ ALFONSO NIETO TAPIA",
+    "imagenes": [
+      "lumos-1.jpeg"
+    ],
+    "portada": "lumos-1.jpeg",
+    "productos": [
+      {
+        "producto": "Lámparas",
+        "precio": 15000,
+        "disponible": 31,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Lunea",
+    "slug": "lunea",
+    "curso": "5A",
+    "producto": "TABLA PARA PICADA",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-35236683",
+    "integrantes": "GOYCOCHEA BARRERA GOMEZ BURGOS ABELANDO AGUERO",
+    "imagenes": [
+      "lunea-2.jpeg",
+      "lunea-4.jpeg",
+      "lunea-3.jpeg",
+      "lunea-5.jpeg"
+    ],
+    "portada": "lunea-2.jpeg",
+    "productos": [
+      {
+        "producto": "Tablas para Picadas Modelo Argentina",
+        "precio": 45000,
+        "disponible": 5,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Tablas para Picadas Modelo Talleres",
+        "precio": 40000,
+        "disponible": 5,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Tablas para Picadas Modelo Belgrano",
+        "precio": 40000,
+        "disponible": 5,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Tablas para Picadas Modelo Estrella",
+        "precio": 15000,
+        "disponible": 3,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Mesa Mood",
+    "slug": "mesa-mood",
+    "curso": "5A",
+    "producto": "MESAS RATONERAS",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-72909870",
+    "integrantes": "GUTIERREZ HEREDIA MORENO CARDOZO GUZMAN",
+    "imagenes": [
+      "mesa-mood-1.jpeg"
+    ],
+    "portada": "mesa-mood-1.jpeg",
+    "productos": [
+      {
+        "producto": "Mesas Ratoneras grandes",
+        "precio": 35000,
+        "disponible": 6,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Mesas  Ratoneras medianas",
+        "precio": 25000,
+        "disponible": 6,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Mesas  Ratoneras chicas",
+        "precio": 15000,
+        "disponible": 6,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Juego personalizado",
+        "precio": 65000,
+        "disponible": 6,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Muza",
+    "slug": "muza",
+    "curso": "5A",
+    "producto": "ORGANIZADORES DE MADERA",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-21519526",
+    "integrantes": "ALVAREZ LUCERO VEGA LINDON PALACIO OLARIAGA",
+    "imagenes": [
+      "muza-1.jpeg"
+    ],
+    "portada": "muza-1.jpeg",
+    "productos": [
+      {
+        "producto": "Organizadores de madera",
+        "precio": 45000,
+        "disponible": 11,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Amelie",
+    "slug": "amelie",
+    "curso": "5C",
+    "producto": "PIE DE CAMA",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-97573749",
+    "integrantes": "VOTERO ASIS OVIEDO LUJAN SMIGELSKI BERRONDO",
+    "imagenes": [
+      "amelie-1.jpeg"
+    ],
+    "portada": "amelie-1.jpeg",
+    "productos": [
+      {
+        "producto": "Pie de cama",
+        "precio": 115000,
+        "disponible": 6,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Baúl de Fantasía",
+    "slug": "baul-de-fantasia",
+    "curso": "5C",
+    "producto": "ORGANIZADORES DE JUGUETES",
+    "actividad": "Fabricación de juegos y juguetes",
+    "expediente": "EXP-2026-63936311",
+    "integrantes": "PADILLA BOSTO PALACIO GIL RIVADERO SCURTTI",
+    "imagenes": [
+      "baul-de-fantasia-1.jpeg",
+      "baul-de-fantasia-2.jpeg",
+      "baul-de-fantasia-3.jpeg",
+      "baul-de-fantasia-4.jpeg",
+      "baul-de-fantasia-5.jpeg"
+    ],
+    "portada": "baul-de-fantasia-1.jpeg",
+    "productos": [
+      {
+        "producto": "Organizador de juguetes",
+        "precio": 45000,
+        "disponible": 11,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Luma",
+    "slug": "luma",
+    "curso": "5C",
+    "producto": "ESTANTES FLOTANTES DE MADERA",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-74729250",
+    "integrantes": "ROMERO MALDONADO MONTOYA FERREYRA BOSSA GONZALEZ",
+    "imagenes": [
+      "luma-1.jpeg"
+    ],
+    "portada": "luma-1.jpeg",
+    "productos": [
+      {
+        "producto": "Estantes Flotantes de MaderaDiseño 1",
+        "precio": 37500,
+        "disponible": 6,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Estantes Flotantes de MaderaDiseño 2",
+        "precio": 42800,
+        "disponible": 4,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Nativa",
+    "slug": "nativa",
+    "curso": "5C",
+    "producto": "COMEDOR PARA MASCOTAS",
+    "actividad": "Confección de prendas de vestir n.c.p.",
+    "expediente": "EXP-2026-20725091",
+    "integrantes": "PEDRAZA RODRIGUEZ LUCIO LORCA VALENZUELA PERALTA",
+    "imagenes": [
+      "nativa-1.jpeg",
+      "nativa-2.jpeg"
+    ],
+    "portada": "nativa-1.jpeg",
+    "productos": [
+      {
+        "producto": "Comedor para mascotas",
+        "precio": 17500,
+        "disponible": 15,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Chicago Box",
+    "slug": "chicago-box",
+    "curso": "6B",
+    "producto": "cuadro mesa",
+    "actividad": "Venta al por menor de artículos nuevos n.c.p.",
+    "expediente": "EXP-2026-75223745",
+    "integrantes": "perez torres vicente quiroga garcia romero cordoba",
+    "imagenes": [
+      "chicago-box-1.jpeg",
+      "chicago-box-2.jpeg",
+      "chicago-box-3.jpeg",
+      "chicago-box-4.jpeg",
+      "chicago-box-5.jpeg"
+    ],
+    "portada": "chicago-box-1.jpeg",
+    "productos": [
+      {
+        "producto": "Ropero",
+        "precio": 400000,
+        "disponible": 1,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Organizadores",
+        "precio": 38500,
+        "disponible": 3,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Mesitas Materas",
+    "slug": "mesitas-materas",
+    "curso": "6B",
+    "producto": "MESAS MATERAS",
+    "actividad": "Fabricación de productos de madera n.c.p.",
+    "expediente": "EXP-2026-45827826",
+    "integrantes": "GUDIÑO CAMARGO MOLINA ROSOLES BONSIGNORE",
+    "imagenes": [
+      "mesitas-materas-1.jpeg"
+    ],
+    "portada": "mesitas-materas-1.jpeg",
+    "productos": [
+      {
+        "producto": "Mesas materas",
+        "precio": 60000,
+        "disponible": 6,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Table Flip",
+    "slug": "table-flip",
+    "curso": "6B",
+    "producto": "JUEGO DE MESAS Y BANQUITOS PARA CAMPING",
+    "actividad": "Fabricación de juegos y juguetes",
+    "expediente": "EXP-2026-93242640",
+    "integrantes": "HEIN GUZMAN OVIEDO ORELLANA ZORRILLA",
+    "imagenes": [
+      "table-flip-1.jpeg"
+    ],
+    "portada": "table-flip-1.jpeg",
+    "productos": [
+      {
+        "producto": "Juego de mesas y banquitos",
+        "precio": 160000,
+        "disponible": 4,
+        "estado": "LISTO"
+      }
+    ]
+  },
+  {
+    "nombre": "Amapola",
+    "slug": "amapola",
+    "curso": "",
+    "producto": "Producción del emprendimiento",
+    "actividad": "Emprendimiento escolar participante de Expo Alvear 2026",
+    "expediente": "",
+    "integrantes": "",
+    "imagenes": [
+      "amapola-1.jpeg"
+    ],
+    "portada": "amapola-1.jpeg",
+    "productos": [
+      {
+        "producto": "Portallaves",
+        "precio": 25000,
+        "disponible": 28,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Hilo y Huesos",
+    "slug": "hilo-y-huesos",
+    "curso": "",
+    "producto": "Producción del emprendimiento",
+    "actividad": "Emprendimiento escolar participante de Expo Alvear 2026",
+    "expediente": "",
+    "integrantes": "",
+    "imagenes": [
+      "hilo-y-huesos-1.jpeg"
+    ],
+    "portada": "hilo-y-huesos-1.jpeg",
+    "productos": [
+      {
+        "producto": "Cuchas para  mascotas",
+        "precio": 65000,
+        "disponible": 7,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Nittel",
+    "slug": "nittel",
+    "curso": "",
+    "producto": "Producción del emprendimiento",
+    "actividad": "Emprendimiento escolar participante de Expo Alvear 2026",
+    "expediente": "",
+    "integrantes": "",
+    "imagenes": [
+      "nittel-1.jpeg"
+    ],
+    "portada": "nittel-1.jpeg",
+    "productos": [
+      {
+        "producto": "Mesitas de Luz Flotantes Con Cajon",
+        "precio": 65000,
+        "disponible": 3,
+        "estado": "LISTO"
+      },
+      {
+        "producto": "Mesitas de Luz Flotantes Sin Cajon",
+        "precio": 40000,
+        "disponible": 7,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Piecha",
+    "slug": "piecha",
+    "curso": "",
+    "producto": "Producción del emprendimiento",
+    "actividad": "Emprendimiento escolar participante de Expo Alvear 2026",
+    "expediente": "",
+    "integrantes": "",
+    "imagenes": [
+      "piecha-1.jpeg"
+    ],
+    "portada": "piecha-1.jpeg",
+    "productos": [
+      {
+        "producto": "Perchero grande",
+        "precio": 30000,
+        "disponible": 6,
+        "estado": "A_CONFIRMAR"
+      },
+      {
+        "producto": "Perchero chico",
+        "precio": 20000,
+        "disponible": 5,
+        "estado": "A_CONFIRMAR"
+      }
+    ]
+  },
+  {
+    "nombre": "Trevol",
+    "slug": "trevol",
+    "curso": "",
+    "producto": "Producción del emprendimiento",
+    "actividad": "Emprendimiento escolar participante de Expo Alvear 2026",
+    "expediente": "",
+    "integrantes": "",
+    "imagenes": [
+      "trevol-1.jpeg"
+    ],
+    "portada": "trevol-1.jpeg",
+    "productos": [
+      {
+        "producto": "Maceteros",
+        "precio": null,
+        "disponible": 11,
+        "estado": "REVISAR"
+      }
+    ]
+  }
+]

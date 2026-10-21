@@ -1,0 +1,233 @@
+---
+/**
+ * Ficha de un emprendimiento escolar.
+ *
+ * Inspirada en la vista de detalle de la pagina original: galeria con
+ * miniaturas a la izquierda y la ficha de datos a la derecha (curso, producto,
+ * actividad, expediente, integrantes y el catalogo de productos con precio).
+ *
+ * La diferencia: la original abre la ficha en otra vista de la SPA. Acá cada
+ * empresa tiene su propia URL, que se puede compartir, indexar y enlazar
+ * desde la navegacion.
+ */
+import { Image, getImage } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import { fotos } from '../../lib/empresas';
+import Layout from '../../layouts/Layout.astro';
+
+export const getStaticPaths = (async () => {
+	const empresas = await getCollection('empresas');
+	return empresas.map((empresa) => ({
+		params: { slug: empresa.data.slug },
+		props: { empresa },
+	}));
+}) satisfies GetStaticPaths;
+
+const { empresa } = Astro.props;
+const { nombre, curso, producto, actividad, expediente, integrantes, productos } = empresa.data;
+
+const galeria = fotos(empresa.data.imagenes);
+const portada = galeria[0];
+
+/**
+ * Para la galeria hace falta la version grande de cada foto: las miniaturas
+ * se sirven en 80px, asi que no se puede usar su `src` para la principal.
+ * getImage genera la variante de 1200px en webp y devuelve la URL lista.
+ */
+const grandes = await Promise.all(
+	galeria.map(async (imagen) => {
+		const optimizada = await getImage({ src: imagen, width: 1200, format: 'webp' });
+		return { src: optimizada.src, alt: `${nombre} — ${producto}` };
+	}),
+);
+
+const cursoLabel = curso ? `${curso}°` : 'Sin curso asignado';
+
+const precioMin = productos.reduce<number | null>((min, p) => {
+	if (p.precio === null) return min;
+	return min === null ? p.precio : Math.min(min, p.precio);
+}, null);
+
+const formato = new Intl.NumberFormat('es-AR', {
+	style: 'currency',
+	currency: 'ARS',
+	maximumFractionDigits: 0,
+});
+---
+
+<Layout title={`${nombre} · Empresas · Expo Alvear 2026`} description={`${nombre}: ${producto}. ${actividad}`}>
+	<!-- Volver -->
+	<div class="border-b border-rule bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-4 sm:px-8">
+			<a
+				href="/empresas/"
+				class="inline-flex items-center gap-2 font-mono text-[0.6875rem] tracking-[0.16em] text-muted uppercase transition-colors hover:text-bordo"
+			>
+				<span aria-hidden="true">←</span>
+				Todas las empresas
+			</a>
+		</div>
+	</div>
+
+	<section class="bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+			<div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+				<!-- Galeria -->
+				<div>
+					<div class="overflow-hidden border border-rule bg-[#eef4f7]">
+						{
+							portada && (
+								<Image
+									src={portada}
+									alt={`${nombre} — ${producto}`}
+									widths={[480, 800, 1200]}
+									sizes="(max-width: 1024px) 100vw, 55vw"
+									loading="eager"
+									fetchpriority="high"
+									class="aspect-4/3 w-full object-contain"
+									data-principal
+								/>
+							)
+						}
+					</div>
+
+					{
+						galeria.length > 1 && (
+							<ul class="mt-3 flex flex-wrap gap-3">
+								{galeria.map((imagen, indice) => (
+									<li>
+										<button
+											type="button"
+											data-indice={indice}
+											class="overflow-hidden border border-rule transition-colors hover:border-bordo aria-[current=true]:border-bordo"
+											aria-label={`Ver foto ${indice + 1} de ${nombre}`}
+											aria-current={indice === 0 ? 'true' : 'false'}
+										>
+											<Image
+												src={imagen}
+												alt=""
+												widths={[80, 160]}
+												sizes="80px"
+												loading="lazy"
+												decoding="async"
+												class="size-20 object-cover"
+											/>
+										</button>
+									</li>
+								))}
+							</ul>
+						)
+					}
+
+					<p class="mt-3 font-mono text-[0.6875rem] tracking-[0.14em] text-muted uppercase">
+						{galeria.length} {galeria.length === 1 ? 'fotografía' : 'fotografías'} del emprendimiento
+					</p>
+				</div>
+
+				<!-- Ficha -->
+				<div>
+					<p class="font-mono text-[0.6875rem] tracking-[0.22em] text-bordo uppercase">{cursoLabel}</p>
+
+					<h1
+						class="mt-4 font-display text-[clamp(2.25rem,5vw,3.5rem)] leading-[0.95] font-semibold tracking-tight text-ink"
+					>
+						{nombre}
+					</h1>
+
+					<p class="mt-4 font-display text-xl text-muted italic">{producto}</p>
+
+					<p class="mt-6 text-base leading-relaxed text-ink">{actividad}</p>
+
+					<!-- Catalogo de productos -->
+					{
+						productos.length > 0 && (
+							<div class="mt-10">
+								<h2 class="font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase">Productos</h2>
+
+								<ul class="mt-4 divide-y divide-rule border-y border-rule">
+									{productos.map((item) => (
+										<li class="flex items-baseline justify-between gap-4 py-3">
+											<span class="text-sm text-ink">{item.producto}</span>
+											<span class="shrink-0 font-mono text-sm text-ink">
+												{item.precio === null ? (
+													<span class="text-muted">Precio a consultar</span>
+												) : (
+													formato.format(item.precio)
+												)}
+											</span>
+										</li>
+									))}
+								</ul>
+
+								{precioMin !== null && (
+									<p class="mt-3 font-mono text-[0.6875rem] tracking-[0.14em] text-muted uppercase">
+										Desde {formato.format(precioMin)} &middot; stock pendiente de sincronizar
+									</p>
+								)}
+							</div>
+						)
+					}
+
+					<!-- Datos administrativo -->
+					<dl class="mt-10 space-y-4 border-t border-rule pt-6">
+						{
+							expediente && (
+								<div>
+									<dt class="font-mono text-[0.6875rem] tracking-[0.18em] text-muted uppercase">
+										Expediente SIGEE
+									</dt>
+									<dd class="mt-1 font-mono text-sm text-ink">{expediente}</dd>
+								</div>
+							)
+						}
+						{
+							integrantes && (
+								<div>
+									<dt class="font-mono text-[0.6875rem] tracking-[0.18em] text-muted uppercase">Integrantes</dt>
+									<dd class="mt-1 text-sm leading-relaxed text-ink">{integrantes}</dd>
+								</div>
+							)
+						}
+					</dl>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!--
+		Las URLs grandes de la galeria viajan en el HTML: el script solo las lee
+		del DOM, sin fetch ni estado en JS.
+	-->
+	<script type="application/json" data-galeria set:html={JSON.stringify(grandes.map((g) => g.src))} />
+</Layout>
+
+<script>
+	// Miniaturas: cambian la foto principal sin recargar.
+	const principal = document.querySelector<HTMLImageElement>('[data-principal]');
+	const miniaturas = [...document.querySelectorAll<HTMLButtonElement>('[data-indice]')];
+	const datos = document.querySelector<HTMLScriptElement>('[data-galeria]');
+
+	if (principal && miniaturas.length && datos) {
+		const fuentes: string[] = JSON.parse(datos.textContent ?? '[]');
+
+		miniaturas.forEach((miniatura, indice) => {
+			miniatura.addEventListener('click', () => {
+				const fuente = fuentes[indice];
+				if (!fuente) return;
+
+				// El srcset pertenece a la foto anterior: hay que sacarlo o el
+				// navegador seguiria mostrando esa imagen en lugar de la nueva.
+				principal.removeAttribute('srcset');
+				principal.removeAttribute('sizes');
+				principal.src = fuente;
+				principal.alt = `Foto ${indice + 1} del emprendimiento`;
+
+				for (const otra of miniaturas) {
+					otra.setAttribute('aria-current', 'false');
+				}
+				miniatura.setAttribute('aria-current', 'true');
+			});
+		});
+	}
+</script>

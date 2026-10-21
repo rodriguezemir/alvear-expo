@@ -1,0 +1,199 @@
+---
+/**
+ * Pagina "Empresas": el catalogo de los 26 emprendimientos escolares.
+ *
+ * Inspirada en la seccion equivalente de la pagina original: buscador, grilla
+ * de tarjetas con foto, curso, nombre y actividad. Lo que cambia es el
+ * tratamiento visual: sin tarjetas redondeadas con sombra, sin color de
+ * plataforma. La grilla usa filetes y el blanco del papel, y el curso va en
+ * monoespaciada, que es el registro de dato tecnico que ya usa el sitio.
+ */
+import { getCollection } from 'astro:content';
+import { foto } from '../lib/empresas';
+import EmpresaCard from '../components/EmpresaCard.astro';
+import Layout from '../layouts/Layout.astro';
+
+const empresas = (await getCollection('empresas')).sort((a, b) =>
+	a.data.nombre.localeCompare(b.data.nombre, 'es'),
+);
+
+const conCurso = empresas.filter((e) => e.data.curso);
+const sinCurso = empresas.filter((e) => !e.data.curso);
+
+const cursos = [...new Set(conCurso.map((e) => e.data.curso))].sort();
+---
+
+<Layout title="Empresas · Expo Alvear 2026" description="Los 26 emprendimientos escolares de la Expo Alvear 2026.">
+	<!-- Encabezado -->
+	<section class="border-b border-rule bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:py-20">
+			<p class="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase">
+				<span class="h-px w-10 shrink-0 bg-bordo" aria-hidden="true"></span>
+				Expo Alvear 2026
+			</p>
+
+			<h1 class="mt-6 font-display text-[clamp(2.75rem,7vw,5rem)] leading-[0.9] font-semibold tracking-tight text-ink">
+				Empresas
+			</h1>
+
+			<div class="mt-8 flex flex-wrap items-end justify-between gap-6">
+				<p class="max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+					Los <strong class="font-semibold text-ink">{empresas.length} emprendimientos</strong> que presentan los
+					estudiantes del Instituto Secundario Carlos María de Alvear. Recorré cada stand y mirá sus productos.
+				</p>
+
+				<p class="font-mono text-[0.6875rem] tracking-[0.16em] text-muted uppercase">
+					{conCurso.length} con curso &middot; {sinCurso.length} sin asignar
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Filtros -->
+	<section class="sticky top-[var(--header-h,5rem)] z-30 border-b border-rule bg-white/95 backdrop-blur">
+		<div class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-4 sm:px-8 lg:flex-row lg:items-center lg:gap-6">
+			<div class="flex-1">
+				<label for="buscar" class="sr-only">Buscar emprendimiento</label>
+				<div class="relative">
+					<svg
+						class="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.5"
+						aria-hidden="true"
+					>
+						<circle cx="11" cy="11" r="7"></circle>
+						<path d="m20 20-3.5-3.5"></path>
+					</svg>
+					<input
+						id="buscar"
+						type="search"
+						placeholder="Buscar por nombre, curso o producto…"
+						autocomplete="off"
+						class="w-full border border-rule bg-white py-2.5 pr-3 pl-9 text-sm text-ink placeholder:text-muted focus:border-bordo focus:outline-none"
+					/>
+				</div>
+			</div>
+
+			<div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por curso">
+				<button
+					type="button"
+					data-curso=""
+					aria-pressed="true"
+					class="filtro border border-bordo bg-bordo px-3 py-2 font-mono text-[0.6875rem] tracking-[0.14em] text-white uppercase transition-colors hover:border-bordo"
+				>
+					Todos
+				</button>
+				{
+					cursos.map((curso) => (
+						<button
+							type="button"
+							data-curso={curso}
+							aria-pressed="false"
+							class="filtro border border-ink/20 px-3 py-2 font-mono text-[0.6875rem] tracking-[0.14em] uppercase transition-colors hover:border-bordo"
+						>
+							{curso}°
+						</button>
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	<!-- Catalogo -->
+	<section class="bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-10 sm:px-8 lg:py-14">
+			<p id="conteo" class="font-mono text-[0.6875rem] tracking-[0.16em] text-muted uppercase" aria-live="polite">
+				Mostrando {empresas.length} de {empresas.length} emprendimientos
+			</p>
+
+			<div id="grilla" class="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					empresas.map((empresa) => {
+						const portada = foto(empresa.data.portada);
+						// El indice de busqueda incluye tambien los nombres de cada
+						// variante: "Jarrones" tiene que encontrar a Flumen, que
+						// cataloga "FUENTES" como producto principal.
+						const indice = [
+							empresa.data.nombre,
+							empresa.data.curso,
+							empresa.data.producto,
+							empresa.data.actividad,
+							...empresa.data.productos.map((p) => p.producto),
+						].join(' ');
+
+						return portada ? (
+							<EmpresaCard
+								empresa={empresa}
+								portada={portada}
+								data-nombre={empresa.data.nombre}
+								data-curso={empresa.data.curso}
+								data-busqueda={indice}
+							/>
+						) : null;
+					})
+				}
+			</div>
+
+			<p id="vacio" class="hidden py-16 text-center text-muted">
+				No hay emprendimientos que coincidan con la búsqueda.
+			</p>
+		</div>
+	</section>
+</Layout>
+
+<script>
+	// Filtro por texto y curso: sin dependencias, en el cliente.
+	const input = document.getElementById('buscar') as HTMLInputElement | null;
+	const botones = [...document.querySelectorAll<HTMLButtonElement>('.filtro')];
+	const tarjetas = [...document.querySelectorAll<HTMLElement>('#grilla > *')];
+	const conteo = document.getElementById('conteo');
+	const vacio = document.getElementById('vacio');
+
+	let cursoActivo = '';
+
+	const normalizar = (s: string) =>
+		s
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[̀-ͯ]/g, '');
+
+	const aplicar = () => {
+		const termino = normalizar(input?.value.trim() ?? '');
+		let visibles = 0;
+
+		for (const tarjeta of tarjetas) {
+			const coincideCurso = !cursoActivo || tarjeta.dataset.curso === cursoActivo;
+			const coincideTexto = !termino || normalizar(tarjeta.dataset.busqueda ?? '').includes(termino);
+			const mostrar = coincideCurso && coincideTexto;
+
+			tarjeta.classList.toggle('hidden', !mostrar);
+			if (mostrar) visibles++;
+		}
+
+		if (conteo) {
+			conteo.textContent = `Mostrando ${visibles} de ${tarjetas.length} emprendimientos`;
+		}
+		vacio?.classList.toggle('hidden', visibles > 0);
+	};
+
+	input?.addEventListener('input', aplicar);
+
+	for (const boton of botones) {
+		boton.addEventListener('click', () => {
+			cursoActivo = boton.dataset.curso ?? '';
+
+			for (const otro of botones) {
+				const activo = otro === boton;
+				otro.setAttribute('aria-pressed', String(activo));
+				otro.classList.toggle('border-bordo', activo);
+				otro.classList.toggle('bg-bordo', activo);
+				otro.classList.toggle('text-white', activo);
+				otro.classList.toggle('border-ink/20', !activo);
+			}
+
+			aplicar();
+		});
+	}
+</script>
