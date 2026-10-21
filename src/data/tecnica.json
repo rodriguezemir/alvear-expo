@@ -1,0 +1,62 @@
+{
+  "tecnica": {
+    "titulo": "Especialidad Técnica",
+    "antebrazo": "Expo Alvear 2026",
+    "bajada": "Aprender haciendo",
+    "intro": [
+      "En el Instituto Secundario Carlos María de Alvear, la formación técnica combina conocimientos teóricos y experiencias prácticas que permiten a los estudiantes desarrollar habilidades, creatividad y capacidad para resolver problemas.",
+      "Los talleres y espacios de aprendizaje son una parte fundamental de esta formación. Allí, los estudiantes se acercan al uso de herramientas, máquinas y procedimientos técnicos, fortaleciendo el trabajo en equipo, la responsabilidad y el compromiso con su aprendizaje.",
+      "En esta edición de Expo Alvear compartimos algunos de los espacios donde se desarrollan estas experiencias educativas, junto con imágenes de trabajos de carpintería."
+    ],
+    "espacios": [
+      {
+        "tipo": "Taller",
+        "titulo": "Sector Carpintería y Ajuste",
+        "descripcion": "Espacio de trabajo con mesas, herramientas y equipamiento para actividades prácticas.",
+        "imagen": "tecnica-carpinteria-ajuste.jpg",
+        "alt": "Sector Carpintería y Ajuste del taller técnico"
+      },
+      {
+        "tipo": "Taller",
+        "titulo": "Sector Mecanizado",
+        "descripcion": "Área equipada con máquinas y recursos para el aprendizaje de procesos técnicos.",
+        "imagen": "tecnica-mecanizado.jpg",
+        "alt": "Sector Mecanizado con maquinaria y equipamiento técnico"
+      },
+      {
+        "tipo": "Aula",
+        "titulo": "Aula Taller",
+        "descripcion": "Ambiente destinado a integrar la enseñanza, la práctica y el desarrollo de actividades.",
+        "imagen": "tecnica-aula-taller.jpg",
+        "alt": "Aula Taller con bancos de trabajo y equipos informáticos"
+      }
+    ],
+    "hojalteria": {
+      "etiqueta": "1.º C · Módulo de Ajuste",
+      "titulo": "Hojalería y Ajuste",
+      "parrafo": "Los estudiantes de 1.º C presentan una pala de hojalería y martillos realizados en el módulo de Ajuste. Estas producciones forman parte de sus experiencias de aprendizaje en los talleres de la especialidad técnica.",
+      "imagen": "tecnica-1c-pala-martillos.jpeg",
+      "alt": "Pala de hojalería y tres martillos elaborados por estudiantes de 1.º C"
+    },
+    "carpinteria": {
+      "titulo": "Trabajos de carpintería",
+      "parrafo": "Imágenes de piezas de madera compartidas para la muestra de la Especialidad Técnica.",
+      "piezas": [
+        {
+          "material": "Madera",
+          "titulo": "Banqueta de madera",
+          "descripcion": "Diseño con terminación pintada.",
+          "imagen": "tecnica-banqueta-azul.jpg",
+          "alt": "Banqueta de madera pintada de azul"
+        },
+        {
+          "material": "Madera",
+          "titulo": "Banqueta plegable",
+          "descripcion": "Dos vistas de su estructura y terminación.",
+          "imagen": "tecnica-banqueta-madera.jpg",
+          "alt": "Dos vistas de una banqueta plegable de madera"
+        }
+      ]
+    }
+  }
+}

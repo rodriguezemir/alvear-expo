@@ -1,0 +1,201 @@
+---
+/**
+ * Pagina de la Especialidad Tecnica.
+ *
+ * Inspirada en la seccion equivalente de la pagina original: una introduccion
+ * sobre el aprendizaje a traves de la practica, los espacios de formacion con
+ * sus fotos y los trabajos que los estudiantes presentan.
+ *
+ * Lo que cambia es el tratamiento. La original usa tarjetas con sombra y
+ * bordes redondeados; aca las fotos van a sangre dentro de filetes, con el
+ * texto en monoespaciada para los datos de identification y en serif para las
+ * entradas de cada taller.
+ */
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import { fotoTecnica } from '../lib/tecnica';
+import Layout from '../layouts/Layout.astro';
+
+const entrada = await getEntry('tecnica', 'tecnica');
+if (!entrada) throw new Error('No se encontro el contenido de la Especialidad Tecnica');
+
+const { titulo, antebrazo, bajada, intro, espacios, hojalteria, carpinteria } = entrada.data;
+---
+
+<Layout
+	title={`${titulo} · Expo Alvear 2026`}
+	description="Los talleres y espacios de aprendizaje de la Especialidad Técnica del Instituto Secundario Carlos María de Alvear."
+>
+	<!-- Titulo -->
+	<section class="border-b border-rule bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:py-20">
+			<p class="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase">
+				<span class="h-px w-10 shrink-0 bg-bordo" aria-hidden="true"></span>
+				{antebrazo}
+			</p>
+
+			<h1
+				class="mt-6 max-w-4xl font-display text-[clamp(2.75rem,7vw,5rem)] leading-[0.9] font-semibold tracking-tight text-ink"
+			>
+				{titulo}
+			</h1>
+
+			<p class="mt-6 font-display text-2xl text-bordo italic sm:text-3xl">{bajada}</p>
+		</div>
+	</section>
+
+	<!-- Introduccion -->
+	<section class="border-b border-rule bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+			<div class="grid gap-8 lg:grid-cols-[0.4fr_1fr] lg:gap-16">
+				<h2 class="font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase lg:pt-1">
+					La formacion
+				</h2>
+
+				<div class="max-w-2xl space-y-5 text-base leading-relaxed text-ink sm:text-lg">
+					{intro.map((parrafo) => <p>{parrafo}</p>)}
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Espacios de formacion -->
+	<section class="bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+			<div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-rule pb-4">
+				<h2 class="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+					Conocé nuestros espacios de formacion
+				</h2>
+				<p class="font-mono text-[0.6875rem] tracking-[0.18em] text-muted uppercase">
+					{espacios.length} sectores
+				</p>
+			</div>
+
+			<ul class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+				{
+					espacios.map((espacio) => {
+						const imagen = fotoTecnica(espacio.imagen);
+						return imagen ? (
+							<li class="flex flex-col">
+								<div class="overflow-hidden border border-rule bg-[#eef4f7]">
+									<Image
+										src={imagen}
+										alt={espacio.alt}
+										widths={[480, 720]}
+										sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+										loading="lazy"
+										decoding="async"
+										class="aspect-3/2 w-full object-cover"
+									/>
+								</div>
+
+								<p class="mt-4 font-mono text-[0.6875rem] tracking-[0.2em] text-bordo uppercase">
+									{espacio.tipo}
+								</p>
+
+								<h3 class="mt-2 font-display text-xl leading-tight font-semibold text-ink">
+									{espacio.titulo}
+								</h3>
+
+								<p class="mt-2 text-sm leading-relaxed text-muted">{espacio.descripcion}</p>
+							</li>
+						) : null;
+					})
+				}
+			</ul>
+		</div>
+	</section>
+
+	<!-- Hojaleria y Ajuste: pieza destacada -->
+	<section class="border-y border-rule bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+			<div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-16">
+				{
+					(() => {
+						const imagen = fotoTecnica(hojalteria.imagen);
+						return imagen ? (
+							<div class="overflow-hidden border border-rule bg-[#eef4f7]">
+								<Image
+									src={imagen}
+									alt={hojalteria.alt}
+									widths={[480, 720]}
+									sizes="(max-width: 1024px) 100vw, 50vw"
+									loading="lazy"
+									decoding="async"
+									/* El original es un diptico vertical (896x1195): con un
+									   recorte 4/3 se perdia parte de la pala. */
+									class="aspect-3/4 w-full object-contain"
+								/>
+							</div>
+						) : null;
+					})()
+				}
+
+				<div>
+					<p class="font-mono text-[0.6875rem] tracking-[0.2em] text-bordo uppercase">
+						{hojalteria.etiqueta}
+					</p>
+
+					<h2 class="mt-4 font-display text-3xl leading-tight font-semibold tracking-tight text-ink sm:text-4xl">
+						{hojalteria.titulo}
+					</h2>
+
+					<p class="mt-5 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+						{hojalteria.parrafo}
+					</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Trabajos de carpinteria -->
+	<section class="bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+			<div class="flex flex-wrap items-baseline justify-between gap-4 border-b border-rule pb-4">
+				<h2 class="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+					{carpinteria.titulo}
+				</h2>
+				<p class="font-mono text-[0.6875rem] tracking-[0.18em] text-muted uppercase">
+					{carpinteria.piezas.length} piezas
+				</p>
+			</div>
+
+			<p class="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+				{carpinteria.parrafo}
+			</p>
+
+			<ul class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2">
+				{
+					carpinteria.piezas.map((pieza) => {
+						const imagen = fotoTecnica(pieza.imagen);
+						return imagen ? (
+							<li class="flex flex-col">
+								<div class="overflow-hidden border border-rule bg-[#eef4f7]">
+									<Image
+										src={imagen}
+										alt={pieza.alt}
+										widths={[480, 720]}
+										sizes="(max-width: 640px) 100vw, 50vw"
+										loading="lazy"
+										decoding="async"
+										class="aspect-4/3 w-full object-contain"
+									/>
+								</div>
+
+								<p class="mt-4 font-mono text-[0.6875rem] tracking-[0.2em] text-bordo uppercase">
+									{pieza.material}
+								</p>
+
+								<h3 class="mt-2 font-display text-xl leading-tight font-semibold text-ink">
+									{pieza.titulo}
+								</h3>
+
+								<p class="mt-2 text-sm leading-relaxed text-muted">{pieza.descripcion}</p>
+							</li>
+						) : null;
+					})
+				}
+			</ul>
+		</div>
+	</section>
+</Layout>

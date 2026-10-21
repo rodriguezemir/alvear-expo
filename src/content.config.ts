@@ -35,4 +35,47 @@ const empresas = defineCollection({
 	}),
 });
 
-export const collections = { empresas };
+/**
+ * Pagina de la Especialidad Tecnica: espacios de formacion y trabajos de
+ * carpinteria. Un solo documento, igual que el catalogo de empresas.
+ */
+const tecnica = defineCollection({
+	loader: file('./src/data/tecnica.json'),
+	schema: z.object({
+		titulo: z.string(),
+		antebrazo: z.string(),
+		bajada: z.string(),
+		intro: z.array(z.string()),
+		espacios: z.array(
+			z.object({
+				tipo: z.string(),
+				titulo: z.string(),
+				descripcion: z.string(),
+				imagen: z.string(),
+				alt: z.string(),
+			}),
+		),
+		hojalteria: z.object({
+			etiqueta: z.string(),
+			titulo: z.string(),
+			parrafo: z.string(),
+			imagen: z.string(),
+			alt: z.string(),
+		}),
+		carpinteria: z.object({
+			titulo: z.string(),
+			parrafo: z.string(),
+			piezas: z.array(
+				z.object({
+					material: z.string(),
+					titulo: z.string(),
+					descripcion: z.string(),
+					imagen: z.string(),
+					alt: z.string(),
+				}),
+			),
+		}),
+	}),
+});
+
+export const collections = { empresas, tecnica };
