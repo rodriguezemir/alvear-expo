@@ -10,12 +10,15 @@
  * El bloque superior queda fuera de <header> a proposito: si fuera parte del
  * header, el sticky no tendria recorrido y la barra no se pegaria al scroll.
  */
+const pathname = Astro.url.pathname;
+const enOpiniones = pathname.startsWith('/opiniones');
+
 const navLinks = [
-	{ label: 'Inicio', href: '/', current: true },
-	{ label: 'Empresas', href: '/empresas/', current: false },
-	{ label: 'Tecnica', href: '/tecnica/', current: false },
-	{ label: 'Naturales', href: '/naturales/', current: false },
-	{ label: 'Invitacion', href: '/invitacion/', current: false },
+	{ label: 'Inicio', href: '/', current: pathname === '/' },
+	{ label: 'Empresas', href: '/empresas/', current: pathname.startsWith('/empresas') },
+	{ label: 'Tecnica', href: '/tecnica/', current: pathname.startsWith('/tecnica') },
+	//{ label: 'Naturales', href: '/naturales/', current: pathname.startsWith('/naturales') },
+	{ label: 'Invitacion', href: '/invitacion/', current: pathname.startsWith('/invitacion') },
 	{ label: 'Notas', href: 'http://alvear.dynalias.com/', current: false },
 ];
 ---
@@ -75,8 +78,14 @@ const navLinks = [
 			<!-- ACCION -->
 			<div class="flex items-center gap-3">
 				<a
-					href="#"
-					class="hidden border border-ink/20 px-4 py-2 text-sm font-medium tracking-wide  transition-colors hover:border-bordo hover:bg-bordo hover:text-white sm:inline-block"
+					href="/opiniones/"
+					aria-current={enOpiniones ? 'page' : undefined}
+					class:list={[
+						'hidden border px-4 py-2 text-sm font-medium tracking-wide transition-colors sm:inline-block',
+						enOpiniones
+							? 'border-bordo bg-bordo text-white'
+							: 'border-ink/20 hover:border-bordo hover:bg-bordo hover:text-white',
+					]}
 				>
 					Opinar
 				</a>
@@ -138,7 +147,14 @@ const navLinks = [
 				))
 			}
 			<li class="bg-white">
-				<a href="#" class="block px-5 py-3.5 text-sm font-medium tracking-wide hover:bg-bordo-tint">
+				<a
+					href="/opiniones/"
+					aria-current={enOpiniones ? 'page' : undefined}
+					class:list={[
+						'block px-5 py-3.5 text-sm font-medium tracking-wide hover:bg-bordo-tint',
+						enOpiniones && 'text-bordo',
+					]}
+				>
 					Opinar
 				</a>
 			</li>

@@ -1,0 +1,302 @@
+---
+/**
+ * Página "Opiniones": formulario para dejar un comentario y lista de las
+ * opiniones aprobadas por la organización.
+ *
+ * Replica la sección de opiniones del sitio original y sigue usando el mismo
+ * Google Apps Script como backend: GET ?action=opiniones devuelve las
+ * publicadas y POST registra una nueva, que queda pendiente de moderación.
+ *
+ * La lista se arma con nodos de texto y no con innerHTML, así un comentario
+ * que incluya HTML se muestra tal cual en lugar de interpretarse.
+ *
+ * El endpoint se puede reemplazar sin tocar el código definiendo
+ * PUBLIC_OPINIONES_API en el entorno.
+ */
+import Layout from '../layouts/Layout.astro';
+
+const API_URL =
+	import.meta.env.PUBLIC_OPINIONES_API ??
+	'https://script.google.com/macros/s/AKfycbxDCpJp1V5iE92RgLT3Ic82XQYlFHTb20mOzQjUdj4xXXa17tarCsXUCpxelTZRLJEilQ/exec';
+---
+
+<Layout
+	title="Opiniones · Expo Alvear 2026"
+	description="Dejá tu opinión sobre la Expo Alvear 2026 y leé los comentarios aprobados por la organización."
+>
+	<!-- Encabezado -->
+	<section class="border-b border-rule bg-white">
+		<div class="mx-auto max-w-6xl px-5 py-14 sm:px-8 lg:py-20">
+			<p class="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase">
+				<span class="h-px w-10 shrink-0 bg-bordo" aria-hidden="true"></span>
+				Opiniones
+			</p>
+
+			<h1
+				class="mt-6 max-w-4xl font-display text-[clamp(2.75rem,7vw,5rem)] leading-[0.9] font-semibold tracking-tight text-ink"
+			>
+				Tu opinión forma parte de la Expo
+			</h1>
+
+			<p class="mt-6 font-display text-2xl text-bordo italic sm:text-3xl">Contanos cómo la viviste.</p>
+
+			<p class="mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+				Podés dejar un comentario sobre tu recorrido. Los comentarios se envían para revisión de la
+				organización antes de su publicación.
+			</p>
+		</div>
+	</section>
+
+	<!-- Formulario y opiniones publicadas -->
+	<section class="bg-white" data-opiniones data-api={API_URL}>
+		<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+			<div class="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-0">
+				<!-- Formulario -->
+				<div class="lg:pr-14">
+					<div class="border-b border-rule pb-4">
+						<h2 class="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+							Dejá tu opinión
+						</h2>
+					</div>
+
+					<form id="form-opinion" class="mt-6" novalidate>
+						<div>
+							<label
+								for="nombre"
+								class="font-mono text-[0.6875rem] tracking-[0.18em] text-muted uppercase"
+							>
+								Nombre <span class="normal-case tracking-normal">(opcional)</span>
+							</label>
+							<input
+								id="nombre"
+								name="nombre"
+								type="text"
+								maxlength="80"
+								autocomplete="name"
+								class="mt-2 w-full border border-rule bg-white px-3 py-2.5 text-sm text-ink transition-colors placeholder:text-muted focus:border-bordo focus:outline-none"
+							/>
+						</div>
+
+						<div class="mt-5">
+							<label
+								for="comentario"
+								class="font-mono text-[0.6875rem] tracking-[0.18em] text-muted uppercase"
+							>
+								Comentario
+							</label>
+							<textarea
+								id="comentario"
+								name="comentario"
+								rows="6"
+								maxlength="1200"
+								required
+								class="mt-2 w-full resize-y border border-rule bg-white px-3 py-2.5 text-sm leading-relaxed text-ink transition-colors placeholder:text-muted focus:border-bordo focus:outline-none"
+							></textarea>
+						</div>
+
+						<button
+							type="submit"
+							class="mt-6 inline-flex items-center justify-center border border-bordo bg-bordo px-5 py-2.5 text-sm font-medium tracking-wide text-white transition-colors hover:border-ink hover:bg-ink disabled:cursor-not-allowed disabled:opacity-60"
+						>
+							Enviar opinión
+						</button>
+
+						<p
+							id="estado-envio"
+							role="status"
+							aria-live="polite"
+							class="mt-4 min-h-5 text-sm leading-relaxed text-muted"
+						></p>
+					</form>
+				</div>
+
+				<!-- Opiniones publicadas -->
+				<div class="lg:border-l lg:border-rule lg:pl-14">
+					<div class="border-b border-rule pb-4">
+						<h2 class="font-display text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+							Opiniones de quienes nos visitan
+						</h2>
+					</div>
+
+					<p class="mt-4 text-sm leading-relaxed text-muted">
+						Compartimos los comentarios aprobados por la organización.
+					</p>
+
+					<div id="lista-opiniones" class="mt-4" aria-live="polite" aria-busy="true"></div>
+
+					<button
+						id="actualizar"
+						type="button"
+						class="mt-6 font-mono text-[0.6875rem] tracking-[0.16em] text-muted uppercase underline-offset-4 transition-colors hover:text-bordo hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+					>
+						Actualizar opiniones
+					</button>
+
+					<noscript>
+						<p class="mt-4 border-t border-rule pt-4 text-sm text-muted">
+							Las opiniones publicadas se cargan con JavaScript. Si no las ves, consultá a la organización.
+						</p>
+					</noscript>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
+
+<script>
+	type Opinion = {
+		nombre?: unknown;
+		comentario?: unknown;
+	};
+
+	const zona = document.querySelector<HTMLElement>('[data-opiniones]');
+	const lista = document.getElementById('lista-opiniones');
+	const formulario = document.querySelector<HTMLFormElement>('#form-opinion');
+	const campoNombre = document.querySelector<HTMLInputElement>('#nombre');
+	const campoComentario = document.querySelector<HTMLTextAreaElement>('#comentario');
+	const estado = document.querySelector<HTMLParagraphElement>('#estado-envio');
+	const actualizar = document.querySelector<HTMLButtonElement>('#actualizar');
+
+	const api = zona?.dataset.api;
+
+	const parrafo = (texto: string) => {
+		const p = document.createElement('p');
+		p.className = 'py-8 text-sm text-muted';
+		p.textContent = texto;
+		return p;
+	};
+
+	const fijarEstado = (texto: string, tipo: 'ok' | 'error' | 'espera') => {
+		if (!estado) return;
+
+		estado.textContent = texto;
+		estado.classList.remove('text-ink', 'text-muted', 'text-bordo');
+		estado.classList.add(tipo === 'error' ? 'text-bordo' : tipo === 'ok' ? 'text-ink' : 'text-muted');
+	};
+
+	/** Una opinión como cita con su firma, sin interpretar el HTML recibido. */
+	const crearOpinion = (opinion: Opinion) => {
+		const articulo = document.createElement('article');
+		articulo.className = 'border-b border-rule py-6';
+
+		const figura = document.createElement('figure');
+
+		const cita = document.createElement('blockquote');
+		cita.className =
+			'font-display text-lg leading-relaxed break-words whitespace-pre-wrap text-ink sm:text-xl';
+		cita.textContent = typeof opinion.comentario === 'string' ? opinion.comentario : '';
+
+		const pie = document.createElement('figcaption');
+		pie.className =
+			'mt-4 flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.16em] text-muted uppercase';
+
+		const linea = document.createElement('span');
+		linea.className = 'h-px w-6 shrink-0 bg-bordo';
+		linea.setAttribute('aria-hidden', 'true');
+
+		const firma = document.createElement('span');
+		const nombre = typeof opinion.nombre === 'string' ? opinion.nombre.trim() : '';
+		firma.textContent = nombre || 'Anónimo';
+
+		pie.append(linea, firma);
+		figura.append(cita, pie);
+		articulo.append(figura);
+
+		return articulo;
+	};
+
+	let cargando = false;
+
+	const cargarOpiniones = async () => {
+		if (!api || !lista || cargando) return;
+
+		cargando = true;
+		if (actualizar) actualizar.disabled = true;
+		lista.setAttribute('aria-busy', 'true');
+		lista.replaceChildren(parrafo('Cargando opiniones…'));
+
+		try {
+			const respuesta = await fetch(`${api}?action=opiniones`, {
+				cache: 'no-store',
+				redirect: 'follow',
+			});
+
+			if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+
+			const datos = (await respuesta.json()) as {
+				ok?: boolean;
+				error?: string;
+				opiniones?: Opinion[];
+			};
+
+			if (!datos.ok || !Array.isArray(datos.opiniones)) {
+				throw new Error(datos.error ?? 'Respuesta inválida');
+			}
+
+			if (datos.opiniones.length === 0) {
+				lista.replaceChildren(parrafo('Todavía no hay opiniones publicadas.'));
+				return;
+			}
+
+			const fragmento = document.createDocumentFragment();
+			for (const opinion of datos.opiniones) fragmento.append(crearOpinion(opinion));
+			lista.replaceChildren(fragmento);
+		} catch (error) {
+			console.warn('No se pudieron cargar las opiniones:', error);
+			lista.replaceChildren(
+				parrafo('No se pudieron cargar las opiniones. Probá de nuevo con «Actualizar opiniones».'),
+			);
+		} finally {
+			cargando = false;
+			if (actualizar) actualizar.disabled = false;
+			lista.setAttribute('aria-busy', 'false');
+		}
+	};
+
+	actualizar?.addEventListener('click', () => void cargarOpiniones());
+	void cargarOpiniones();
+
+	formulario?.addEventListener('submit', async (evento) => {
+		evento.preventDefault();
+		if (!api || !formulario) return;
+
+		const nombre = campoNombre?.value.trim() ?? '';
+		const comentario = campoComentario?.value.trim() ?? '';
+
+		if (comentario.length < 5) {
+			fijarEstado('Escribí una opinión de al menos 5 caracteres.', 'error');
+			campoComentario?.focus();
+			return;
+		}
+
+		const boton = formulario.querySelector<HTMLButtonElement>('button[type="submit"]');
+		if (boton) boton.disabled = true;
+		fijarEstado('Enviando opinión…', 'espera');
+
+		try {
+			const respuesta = await fetch(api, {
+				method: 'POST',
+				// text/plain evita el preflight de CORS: Apps Script solo acepta
+				// peticiones simples desde el navegador.
+				headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+				body: JSON.stringify({ action: 'opinion', nombre, comentario }),
+			});
+
+			if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+
+			const datos = (await respuesta.json()) as { ok?: boolean; error?: string };
+			if (!datos.ok) throw new Error(datos.error ?? 'Error de envío');
+
+			fijarEstado('¡Gracias! Opinión recibida, pendiente de moderación.', 'ok');
+			formulario.reset();
+		} catch (error) {
+			console.warn('No se pudo enviar la opinión:', error);
+			fijarEstado(
+				'No se pudo confirmar el envío. Consultá a la organización antes de intentarlo otra vez.',
+				'error',
+			);
+		} finally {
+			if (boton) boton.disabled = false;
+		}
+	});
+</script>
