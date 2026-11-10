@@ -1,0 +1,98 @@
+[
+  {
+    "id": "2021",
+    "anio": 2021,
+    "color": "#5b6f52",
+    "actividades": [],
+    "galeria": []
+  },
+  {
+    "id": "2022",
+    "anio": 2022,
+    "color": "#3f5f7a",
+    "actividades": [],
+    "galeria": []
+  },
+  {
+    "id": "2023",
+    "anio": 2023,
+    "color": "#8a5a3b",
+    "actividades": [],
+    "galeria": []
+  },
+  {
+    "id": "2024",
+    "anio": 2024,
+    "color": "#6f4a6d",
+    "actividades": [],
+    "galeria": []
+  },
+  {
+    "id": "2025",
+    "anio": 2025,
+    "color": "#2f6b66",
+    "actividades": [],
+    "galeria": []
+  },
+  {
+    "id": "2026",
+    "anio": 2026,
+    "nombre": "Promoción 2026",
+    "lema": "Definiendo presente y futuro",
+    "descripcion": "La promoción 2026 forma parte de la comunidad educativa que llevó adelante la Expo Alvear. Esta selección reúne los espacios de formación, los trabajos de los talleres y los emprendimientos que acompañaron su recorrido por la escuela.",
+    "color": "#8c2231",
+    "actividades": [
+      {
+        "titulo": "Expo Alvear 2026",
+        "descripcion": "Presentación de los emprendimientos y proyectos de los estudiantes en la muestra anual del Instituto."
+      },
+      {
+        "titulo": "Especialidad Técnica",
+        "descripcion": "Recorrido por los talleres de carpintería, mecanizado y el aula taller, con las producciones realizadas en los módulos de aprendizaje."
+      },
+      {
+        "titulo": "Producciones de los estudiantes",
+        "descripcion": "Piezas de hojalatería, carpintería y objetos de diseño que formaron parte de la muestra."
+      }
+    ],
+    "galeria": [
+      {
+        "imagen": "promocion-2026-aula-taller.jpg",
+        "alt": "Aula taller con bancos de trabajo y equipos informáticos",
+        "epigrafe": "El aula taller, un espacio para aprender haciendo."
+      },
+      {
+        "imagen": "promocion-2026-carpinteria.jpg",
+        "alt": "Sector de carpintería y ajuste del taller técnico",
+        "epigrafe": "Carpintería y ajuste, uno de los sectores de la especialidad."
+      },
+      {
+        "imagen": "promocion-2026-mecanizado.jpg",
+        "alt": "Sector de mecanizado con maquinaria y equipamiento técnico",
+        "epigrafe": "Mecanizado: máquinas y procedimientos del taller."
+      },
+      {
+        "imagen": "promocion-2026-hojalteria.jpeg",
+        "alt": "Pala de hojalatería y tres martillos realizados por estudiantes",
+        "epigrafe": "Pala de hojalatería y martillos del módulo de Ajuste."
+      },
+      {
+        "imagen": "promocion-2026-emprendimiento.jpeg",
+        "alt": "Fuente de cerámica con plantas realizada por un emprendimiento escolar",
+        "epigrafe": "Un emprendimiento escolar de la Expo 2026."
+      },
+      {
+        "imagen": "promocion-2026-instituto.png",
+        "alt": "Frente del Instituto Secundario Carlos María de Alvear",
+        "epigrafe": "El Instituto Carlos María de Alvear, en Córdoba."
+      }
+    ]
+  },
+  {
+    "id": "2027",
+    "anio": 2027,
+    "color": "#4a4f57",
+    "actividades": [],
+    "galeria": []
+  }
+]

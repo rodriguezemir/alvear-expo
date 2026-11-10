@@ -36,6 +36,48 @@ const empresas = defineCollection({
 });
 
 /**
+ * Archivo historico de promociones del colegio.
+ *
+ * Cada entrada guarda lo que hizo la promocion (actividades) y las fotos que
+ * se muestran en su pagina. Las entradas sin contenido quedan visibles en el
+ * menu como "sin datos" y no generan ruta propia.
+ *
+ * El campo `color` define el acento con el que se pinta la pagina de cada
+ * promocion, de modo que cada una tenga su propio estilo sin tocar CSS.
+ */
+const promociones = defineCollection({
+	loader: file('./src/data/promociones.json'),
+	schema: z.object({
+		anio: z.number().int().min(2000).max(2100),
+		nombre: z.string().optional(),
+		lema: z.string().optional(),
+		descripcion: z.string().optional(),
+		color: z
+			.string()
+			.regex(/^#[0-9a-fA-F]{6}$/, 'El color debe ser un hexadecimal de seis dígitos')
+			.default('#8c2231'),
+		actividades: z
+			.array(
+				z.object({
+					titulo: z.string(),
+					descripcion: z.string(),
+				}),
+			)
+			.default([]),
+		galeria: z
+			.array(
+				z.object({
+					/** Nombre de archivo dentro de src/assets/promociones. */
+					imagen: z.string(),
+					alt: z.string(),
+					epigrafe: z.string().optional(),
+				}),
+			)
+			.default([]),
+	}),
+});
+
+/**
  * Pagina de la Especialidad Tecnica: espacios de formacion y trabajos de
  * carpinteria. Un solo documento, igual que el catalogo de empresas.
  */
@@ -78,4 +120,4 @@ const tecnica = defineCollection({
 	}),
 });
 
-export const collections = { empresas, tecnica };
+export const collections = { empresas, tecnica, promociones };
