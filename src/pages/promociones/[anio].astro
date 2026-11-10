@@ -1,0 +1,330 @@
+---
+/**
+ * Página de una promoción del colegio.
+ *
+ * Los datos viven en src/data/promociones.json y las fotos en
+ * src/assets/promociones. Solo se genera una ruta para las promociones que
+ * tienen contenido: las que están vacías aparecen en el menú, pero no se
+ * pueden abrir.
+ *
+ * El acento de cada promoción sale del campo `color` del JSON y se aplica
+ * como variable CSS (--promo), así cada página tiene su propio tono.
+ */
+import { getCollection } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import { fotoPromocion, tieneDatos } from '../../lib/promociones';
+
+export const getStaticPaths = (async () => {
+	const promociones = await getCollection('promociones');
+
+	return promociones
+		.filter((promocion) => tieneDatos(promocion.data))
+		.sort((a, b) => a.data.anio - b.data.anio)
+		.map((promocion) => ({
+			params: { anio: String(promocion.data.anio) },
+			props: { promocion },
+		}));
+}) satisfies GetStaticPaths;
+
+const { promocion } = Astro.props;
+const { anio, nombre, lema, descripcion, color, actividades, galeria } = promocion.data;
+
+const titulo = nombre?.trim() || `Promoción ${anio}`;
+const acento = color || '#8c2231';
+
+/** Las fotos que no existen en src/assets/promociones se omiten con aviso. */
+const fotos = galeria.flatMap((item) => {
+	const imagen = fotoPromocion(item.imagen);
+
+	if (!imagen) {
+		console.warn(`[promociones] No se encontró la foto "${item.imagen}" de la promoción ${anio}.`);
+		return [];
+	}
+
+	return [{ ...item, imagen }];
+});
+
+/**
+ * Versión grande para el visor: se genera en webp y sin superar el ancho
+ * original de la foto, para no ampliar imágenes chicas.
+ */
+const grandes = await Promise.all(
+	fotos.map(async (foto) => {
+		const optimizada = await getImage({
+			src: foto.imagen,
+			width: Math.min(foto.imagen.width, 1600),
+			format: 'webp',
+		});
+
+		return optimizada.src;
+	}),
+);
+
+const descripcionMeta =
+	descripcion?.trim() || `${titulo}: actividades y galería de fotos del Instituto Carlos María de Alvear.`;
+---
+
+<Layout title={`${titulo} · Promociones · Expo Alvear 2026`} description={descripcionMeta}>
+	<div style={`--promo: ${acento};`}>
+		<!-- Portada y galería -->
+		<section class="border-b border-rule bg-white">
+			<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+				<p
+					class="flex items-center gap-3 font-mono text-[0.6875rem] tracking-[0.22em] text-[var(--promo)] uppercase"
+				>
+					<span class="h-px w-10 shrink-0 bg-[var(--promo)]" aria-hidden="true"></span>
+					Promoción {anio}
+				</p>
+
+				<div class="mt-6 flex flex-wrap items-end justify-between gap-4">
+					<h1
+						class="max-w-3xl font-display text-[clamp(2.75rem,7vw,5rem)] leading-[0.9] font-semibold tracking-tight text-ink"
+					>
+						{titulo}
+					</h1>
+
+					{
+						fotos.length > 0 && (
+							<p class="font-mono text-[0.6875rem] tracking-[0.16em] text-muted uppercase">
+								{fotos.length} {fotos.length === 1 ? 'foto' : 'fotos'}
+							</p>
+						)
+					}
+				</div>
+
+				{
+					lema?.trim() && (
+						<p class="mt-6 max-w-2xl font-display text-2xl text-[var(--promo)] italic sm:text-3xl">
+							{lema}
+						</p>
+					)
+				}
+
+				<!--
+					La galería abre la página a propósito: primero las imágenes de
+					la promoción y después el relato de lo que hizo. Cada foto se
+					amplía en el visor de abajo.
+				-->
+				{
+					fotos.length > 0 && (
+						<ul
+							class="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-3"
+							aria-label={`Galería de fotos de ${titulo}`}
+						>
+							{fotos.map((foto, indice) => (
+								<li>
+									<button
+										type="button"
+										data-foto
+										data-indice={indice}
+										data-full={grandes[indice]}
+										data-alt={foto.alt}
+										data-epigrafe={foto.epigrafe ?? foto.alt}
+										aria-haspopup="dialog"
+										aria-label={`Ampliar foto ${indice + 1}: ${foto.alt}`}
+										class="group relative block w-full overflow-hidden border border-rule bg-[#eef4f7] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--promo)]"
+									>
+										<Image
+											src={foto.imagen}
+											alt=""
+											widths={[400, 800, 1200]}
+											sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+											loading={indice < 2 ? 'eager' : 'lazy'}
+											decoding="async"
+											class="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+										/>
+
+										<span
+											class="pointer-events-none absolute inset-0 bg-ink/0 transition-colors group-hover:bg-ink/15"
+											aria-hidden="true"
+										/>
+
+										<span
+											class="pointer-events-none absolute right-3 bottom-3 border border-white/40 bg-ink/70 px-2 py-1 font-mono text-[0.5625rem] tracking-[0.16em] text-white uppercase opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
+										>
+											Ampliar
+										</span>
+									</button>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</div>
+		</section>
+
+		<!-- Lo que hizo la promoción -->
+		{
+			(descripcion?.trim() || actividades.length > 0) && (
+				<section class="bg-white">
+					<div class="mx-auto max-w-6xl px-5 py-12 sm:px-8 lg:py-16">
+						<div class="grid gap-8 lg:grid-cols-[0.36fr_1fr] lg:gap-16">
+							<div>
+								<h2 class="font-mono text-[0.6875rem] tracking-[0.22em] text-muted uppercase">
+									Lo que hizo
+								</h2>
+							</div>
+
+							<div>
+								{descripcion?.trim() && (
+									<p class="font-display text-2xl leading-snug text-ink sm:text-3xl">{descripcion}</p>
+								)}
+
+								{actividades.length > 0 && (
+									<ol class="mt-10 divide-y divide-rule border-y border-rule">
+										{actividades.map((actividad, indice) => (
+											<li class="grid gap-4 py-6 sm:grid-cols-[3rem_1fr]">
+												<span class="font-mono text-sm text-[var(--promo)]">
+													{String(indice + 1).padStart(2, '0')}
+												</span>
+
+												<div>
+													<h3 class="font-display text-xl leading-tight font-semibold text-ink">
+														{actividad.titulo}
+													</h3>
+													<p class="mt-2 text-sm leading-relaxed text-muted">{actividad.descripcion}</p>
+												</div>
+											</li>
+										))}
+									</ol>
+								)}
+							</div>
+						</div>
+					</div>
+				</section>
+			)
+		}
+
+		<!-- Visor de fotos -->
+		{
+			fotos.length > 0 && (
+				<dialog
+					id="galeria-dialog"
+					aria-label={`Galería de fotos de ${titulo}`}
+					class="m-auto w-[min(94vw,72rem)] max-w-none border-0 bg-transparent p-0 text-white backdrop:bg-ink/85 backdrop:backdrop-blur-sm"
+				>
+					<div class="relative bg-ink">
+						<div class="flex items-center justify-between gap-4 border-b border-white/15 px-4 py-3 sm:px-6">
+							<p
+								data-dialogo-contador
+								class="font-mono text-[0.6875rem] tracking-[0.18em] text-white/60 uppercase"
+							></p>
+							<button
+								type="button"
+								data-dialogo-cerrar
+								class="flex items-center gap-2 border border-white/25 px-3 py-1.5 font-mono text-[0.625rem] tracking-[0.16em] text-white/80 uppercase transition-colors hover:border-white hover:text-white"
+							>
+								Cerrar <span aria-hidden="true">×</span>
+							</button>
+						</div>
+
+						<figure>
+							<div class="relative grid min-h-[40vh] place-items-center bg-black/30 p-3 sm:p-8">
+								<img data-dialogo-img alt="" class="max-h-[70vh] w-auto max-w-full object-contain" />
+
+								<button
+									type="button"
+									data-dialogo-anterior
+									aria-label="Foto anterior"
+									class="absolute top-1/2 left-3 grid size-10 -translate-y-1/2 place-items-center border border-white/25 bg-ink/70 text-white transition-colors hover:border-white hover:bg-ink"
+								>
+									<span aria-hidden="true">←</span>
+								</button>
+
+								<button
+									type="button"
+									data-dialogo-siguiente
+									aria-label="Foto siguiente"
+									class="absolute top-1/2 right-3 grid size-10 -translate-y-1/2 place-items-center border border-white/25 bg-ink/70 text-white transition-colors hover:border-white hover:bg-ink"
+								>
+									<span aria-hidden="true">→</span>
+								</button>
+							</div>
+
+							<figcaption
+								data-dialogo-epigrafe
+								class="min-h-12 border-t border-white/15 px-4 py-3 text-sm leading-relaxed text-white/70 sm:px-6"
+							></figcaption>
+						</figure>
+					</div>
+				</dialog>
+			)
+		}
+	</div>
+</Layout>
+
+<script>
+	const dialogo = document.querySelector<HTMLDialogElement>('#galeria-dialog');
+	const fotos = [...document.querySelectorAll<HTMLButtonElement>('[data-foto]')];
+
+	if (dialogo && fotos.length > 0) {
+		const imagen = dialogo.querySelector<HTMLImageElement>('[data-dialogo-img]');
+		const contador = dialogo.querySelector<HTMLElement>('[data-dialogo-contador]');
+		const epigrafe = dialogo.querySelector<HTMLElement>('[data-dialogo-epigrafe]');
+		const cerrar = dialogo.querySelector<HTMLButtonElement>('[data-dialogo-cerrar]');
+		const anterior = dialogo.querySelector<HTMLButtonElement>('[data-dialogo-anterior]');
+		const siguiente = dialogo.querySelector<HTMLButtonElement>('[data-dialogo-siguiente]');
+
+		let indice = 0;
+		let disparador: HTMLButtonElement | null = null;
+		let overflowAnterior = '';
+
+		const mostrar = (nuevoIndice: number) => {
+			indice = (nuevoIndice + fotos.length) % fotos.length;
+			const boton = fotos[indice];
+			if (!boton) return;
+
+			if (imagen) {
+				imagen.src = boton.dataset.full ?? '';
+				imagen.alt = boton.dataset.alt ?? '';
+			}
+
+			if (contador) {
+				const actual = String(indice + 1).padStart(2, '0');
+				const total = String(fotos.length).padStart(2, '0');
+				contador.textContent = `${actual} / ${total}`;
+			}
+
+			if (epigrafe) epigrafe.textContent = boton.dataset.epigrafe ?? '';
+		};
+
+		for (const [i, boton] of fotos.entries()) {
+			boton.addEventListener('click', () => {
+				disparador = boton;
+				mostrar(i);
+				overflowAnterior = document.body.style.overflow;
+				document.body.style.overflow = 'hidden';
+				dialogo.showModal();
+				cerrar?.focus();
+			});
+		}
+
+		cerrar?.addEventListener('click', () => dialogo.close());
+		anterior?.addEventListener('click', () => mostrar(indice - 1));
+		siguiente?.addEventListener('click', () => mostrar(indice + 1));
+
+		// Clic en el fondo oscuro (fuera del panel) cierra el visor.
+		dialogo.addEventListener('click', (evento) => {
+			if (evento.target === dialogo) dialogo.close();
+		});
+
+		dialogo.addEventListener('keydown', (evento) => {
+			if (evento.key === 'ArrowRight') {
+				evento.preventDefault();
+				mostrar(indice + 1);
+			}
+
+			if (evento.key === 'ArrowLeft') {
+				evento.preventDefault();
+				mostrar(indice - 1);
+			}
+		});
+
+		dialogo.addEventListener('close', () => {
+			document.body.style.overflow = overflowAnterior;
+			disparador?.focus();
+		});
+	}
+</script>

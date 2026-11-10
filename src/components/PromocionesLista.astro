@@ -1,0 +1,79 @@
+---
+/**
+ * Lista de promociones del menú del header.
+ *
+ * Se usa en el desplegable de escritorio y dentro del acordeón móvil. Las
+ * promociones sin datos se renderizan como texto, no como enlace: la sección
+ * queda visible pero no se puede abrir.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { tieneDatos } from '../lib/promociones';
+
+interface Props {
+	promociones: CollectionEntry<'promociones'>[];
+	anioActual?: number;
+	variante?: 'escritorio' | 'movil';
+}
+
+const { promociones, anioActual, variante = 'escritorio' } = Astro.props;
+
+const fila = variante === 'movil' ? 'gap-4 px-5 py-3.5' : 'gap-6 px-4 py-3';
+const etiqueta = variante === 'movil' ? 'text-[0.625rem]' : 'text-[0.6875rem]';
+---
+
+{
+	promociones.map((promocion) => {
+		const { anio, color } = promocion.data;
+		const publicada = tieneDatos(promocion.data);
+		const actual = anio === anioActual;
+
+		return (
+			<li>
+				{publicada ? (
+					<a
+						href={`/promociones/${anio}/`}
+						aria-current={actual ? 'page' : undefined}
+						class:list={[
+							'group flex items-center justify-between transition-colors hover:bg-bordo-tint/60',
+							fila,
+							actual && 'bg-[#f7f6f4]',
+						]}
+					>
+						<span class="flex items-center gap-3">
+							<span
+								class="size-1.5 shrink-0 rounded-full"
+								style={`background: ${color}`}
+								aria-hidden="true"
+							/>
+							<span class="font-mono text-sm tracking-[0.08em] text-ink">{anio}</span>
+						</span>
+						<span
+							class:list={[
+								'shrink-0 text-right font-mono tracking-[0.12em] text-muted uppercase transition-colors group-hover:text-bordo',
+								etiqueta,
+							]}
+						>
+							{actual ? 'Estás acá' : 'Ver promoción'}
+						</span>
+					</a>
+				) : (
+					<span
+						aria-disabled="true"
+						title={`La promoción ${anio} todavía no tiene datos`}
+						class:list={['flex cursor-not-allowed items-center justify-between text-muted/55', fila]}
+					>
+						<span class="flex items-center gap-3">
+							<span
+								class="size-1.5 shrink-0 rounded-full opacity-40"
+								style={`background: ${color}`}
+								aria-hidden="true"
+							/>
+							<span class="font-mono text-sm tracking-[0.08em]">{anio}</span>
+						</span>
+						<span class:list={['font-mono tracking-[0.14em] uppercase', etiqueta]}>Sin datos</span>
+					</span>
+				)}
+			</li>
+		);
+	})
+}
